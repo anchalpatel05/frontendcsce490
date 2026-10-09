@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text Collector</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Text Collector</h1>
+
+    <form id="message-form">
+      <input type="text" id="message-input" placeholder="Enter Text" autocomplete="off" required>
+      <button type="submit">Submit</button>
+    </form>
+    <p id="error" class="error"></p>
+
+    <h2>Text Entered:</h2>
+    <ul id="message-list"></ul>
+    <p id="empty" class="empty">No messages yet. Be the first to add one!</p>
+  </div>
+
+  <script>
+    const form = document.getElementById("message-form");
+    const input = document.getElementById("message-input");
+    const list = document.getElementById("message-list");
+    const empty = document.getElementById("empty");
+    const error = document.getElementById("error");
+
+    // Load and show all saved messages
+    async function loadMessages() {
+      const res = await fetch("/messages");
+      const messages = await res.json();
+
+      list.innerHTML = "";
+      messages.forEach((msg) => {
+        const li = document.createElement("li");
+
+        const text = document.createElement("span");
+        text.className = "text";
+        text.textContent = msg.text;
+
+        const date = document.createElement("span");
+        date.className = "date";
+        date.textContent = msg.date;
+
+        li.appendChild(text);
+        li.appendChild(date);
+        list.appendChild(li);
+      });
+
+      empty.style.display = messages.length ? "none" : "block";
+    }
+
+    // Send a new message to the server
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      error.textContent = "";
+
+      const res = await fetch("/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: input.value })
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        error.textContent = data.error;
+        return;
+      }
+
+      input.value = "";
+      loadMessages();
+    });
+
+    loadMessages();
+  </script>
+</body>
+</html>

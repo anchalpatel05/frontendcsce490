@@ -1,0 +1,25 @@
+{
+  "name": "frontendcsce490",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anchalpatel05/frontendcsce490.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/anchalpatel05/frontendcsce490/issues"
+  },
+  "homepage": "https://github.com/anchalpatel05/frontendcsce490#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
